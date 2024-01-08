@@ -21,9 +21,7 @@ LIST = getoutput("gh milestone list --repo=bswck/oss")
 # Create milestones for the next 60 years
 # Hopefully I'll live that long :)
 for year in range(YEAR, YEAR + 60):
-    months = range(MONTH if year == YEAR else 1, 13)
-
-    for month in months:
+    for month in range(MONTH if year == YEAR else 1, 13):
         due_date = (
             date(
                 year=year,
