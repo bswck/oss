@@ -1,22 +1,20 @@
 #!/usr/bin/env pip-run
 """Generate milestones for the next 60 years."""
 
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 from string import capwords
 from subprocess import getoutput, run
 
 from monthdelta import monthdelta  # type: ignore[import-untyped]
-from zoneinfo import ZoneInfo
 
 __requires__ = ["monthdelta"]
 
-ZONE = ZoneInfo("Europe/Warsaw")
-TODAY = datetime.today().astimezone(ZONE)
+TODAY = date.today()
 
 YEAR = TODAY.year
 MONTH = TODAY.month
 
-# ruff: noqa: EXE003,PLR2004,T201
+# ruff: noqa: DTZ011,EXE003,PLR2004,T201
 
 # Create milestones for the next 60 years
 # Hopefully I'll live that long :)
@@ -25,11 +23,10 @@ for year in range(YEAR, YEAR + 60):
 
     for month in months:
         due_date = (
-            datetime(
+            date(
                 year=year,
                 month=month,
                 day=1,
-                tzinfo=ZONE,
             )
             + monthdelta(1)
             - timedelta(days=1)
@@ -46,7 +43,7 @@ for year in range(YEAR, YEAR + 60):
                     "--repo=bswck/oss",
                     f"--title={title}",
                     f"--description=Things to do in {title}",
-                    f"--due-date={due_date.strftime('%Y-%m-%d')}",
+                    f"--due-date={due_date}",
                 ],
                 check=True,
             )
